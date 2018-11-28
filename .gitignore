@@ -1,0 +1,34 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+.DS_Store
+
+#log and json files
+*.log
+
+#local directory for temporary files
+localJunk/
+
+#vscode local direcoty
+.vs/
+
+#debug files created by go test
+debug
+
+#binary files
+*.so
+*.a
+*.o
+
+#sqlite database
+*.db
+*.db-journal
