@@ -139,10 +139,7 @@ func TestProcessBlobs(t *testing.T) {
 func TestFrameGenerator(t *testing.T) {
 	frame := NewFrame()
 	blobs := make(chan *Blobs, 1)
-	var missing chan []uint64
-	go func() {
-		_, missing = FrameGenerator(frame, blobs)
-	}()
+	_, missing := FrameGenerator(frame, blobs)
 	bs := NewNumBlobs(20)
 	from := make([]byte, 32)
 	bs.IndexBlobs(from, 100)
