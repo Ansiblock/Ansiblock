@@ -32,3 +32,4 @@ debug
 #sqlite database
 *.db
 *.db-journal
+.vscode/launch.json
