@@ -1,4 +1,5 @@
 # Ansiblock
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/Ansiblock/Lobby)
 
 Ansiblock was designed to disrupt current limitations of blockchain technology. Ansiblock can achieve more than a million transactions per second without sharding.
 
@@ -62,7 +63,7 @@ Any contribution is welcome, we are grateful for smallest fixes. Please fork, co
 Our coding guidelines:
 * Use standard Go [formating](https://golang.org/doc/effective_go.html#formatting) guidelines.
 * Use standard Go [commenting](https://golang.org/doc/effective_go.html#commentary) guidelines.
-* If your complex commits please contact us on our [gitter](???) channel.
+* If your complex commits please contact us on our [gitter](https://gitter.im/Ansiblock/Lobby) channel.
 
 For more details check our [Developers' Guide](???).
 
