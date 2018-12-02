@@ -1,7 +1,7 @@
 # Ansiblock
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/Ansiblock/Lobby)
 [![CircleCI](https://circleci.com/gh/Ansiblock/Ansiblock.svg?style=svg)](https://circleci.com/gh/Ansiblock/Ansiblock)
-
+[![codecov](https://codecov.io/gh/Ansiblock/Ansiblock/branch/master/graph/badge.svg)](https://codecov.io/gh/Ansiblock/Ansiblock)
 
 Ansiblock was designed to disrupt current limitations of blockchain technology. Ansiblock can achieve more than a million transactions per second without sharding.
 
