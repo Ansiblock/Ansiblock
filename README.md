@@ -57,6 +57,12 @@ Ansiblock uses Proof-of-Order (PoO) for computational timestamping. Using [VDFs]
 ### Proof of State
 Proof-of-State (PoST) is cryptographic proof that blockchain is in specific state. State of the blockchain is a “snapshot” of Ansiblock network containing all client data, including accounts, smart contract and other data entities of the blockchain. 
 
+### Proof of Relication
+Using Proof-of-Replication (PoRep) Ansiblock is storing data in decenralized way. We are storing blocks as well as user files.
+
+### Proof of Stake
+Ansiblock network is using Byzantine Fault Tolerant style (partially synchronous) Proof-of-Stake (POS) algorithm.
+
 
 
 ## Contribution
