@@ -48,7 +48,7 @@ To run unit tests use:
 > go test ./...
 
 ## Ansiblock Architecture
-![Ansiblock Architecture](docs/archi.png)
+![Ansiblock Architecture](docs/archi.jpeg)
 
 ## Ansiblock Consensus
 ### Proof of Order
