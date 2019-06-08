@@ -2,11 +2,9 @@ package api
 
 import (
 	"encoding/base64"
-	"fmt"
 	"math/rand"
 	"reflect"
 	"testing"
-	"time"
 
 	"github.com/Ansiblock/Ansiblock/block"
 	"github.com/Ansiblock/Ansiblock/books"
@@ -207,129 +205,129 @@ func TestBlockByHash2(t *testing.T) {
 	}
 }
 
-func TestCalculateTPS(t *testing.T) {
-	db := new(DBMock)
-	db.Blocks = make([]*block.Block, 0, 20)
-	accounts := books.NewBookManager()
-	accounts.AddValidVDFValue(block.VDF([]byte{1}))
+// func TestCalculateTPS(t *testing.T) {
+// 	db := new(DBMock)
+// 	db.Blocks = make([]*block.Block, 0, 20)
+// 	accounts := books.NewBookManager()
+// 	accounts.AddValidVDFValue(block.VDF([]byte{1}))
 
-	accounts.CreateAccount([]byte("me"), 1000)
-	accounts.CreateAccount([]byte("you"), 0)
+// 	accounts.CreateAccount([]byte("me"), 1000)
+// 	accounts.CreateAccount([]byte("you"), 0)
 
-	blockchainAPI := New(accounts, db, nil, nil)
-	stop := true
-	go blockchainAPI.calculateTPS(&stop)
-	time.Sleep(1 * time.Second)
-	for i := 0; i < 10; i++ {
-		transactions := block.CreateRealTransactionsFrom(10, []byte("me"))
-		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
-		db.Blocks = append(db.Blocks, &bl)
-		accounts.ProcessBlocks([]block.Block{bl})
-	}
-	time.Sleep(1 * time.Second)
-	stop = false
-	if blockchainAPI.stats.maxTPS < 80 {
-		t.Errorf("calculateTPS expected %v was %v!", 80, blockchainAPI.stats.maxTPS)
-	}
-	fmt.Println(blockchainAPI.stats)
-}
+// 	blockchainAPI := New(accounts, db, nil, nil)
+// 	stop := true
+// 	go blockchainAPI.calculateTPS(&stop)
+// 	time.Sleep(1 * time.Second)
+// 	for i := 0; i < 10; i++ {
+// 		transactions := block.CreateRealTransactionsFrom(10, []byte("me"))
+// 		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
+// 		db.Blocks = append(db.Blocks, &bl)
+// 		accounts.ProcessBlocks([]block.Block{bl})
+// 	}
+// 	time.Sleep(1 * time.Second)
+// 	stop = false
+// 	if blockchainAPI.stats.maxTPS < 80 {
+// 		t.Errorf("calculateTPS expected %v was %v!", 80, blockchainAPI.stats.maxTPS)
+// 	}
+// 	fmt.Println(blockchainAPI.stats)
+// }
 
-func TestTPS(t *testing.T) {
-	db := new(DBMock)
-	db.Blocks = make([]*block.Block, 0, 20)
-	accounts := books.NewBookManager()
-	accounts.AddValidVDFValue(block.VDF([]byte{1}))
+// func TestTPS(t *testing.T) {
+// 	db := new(DBMock)
+// 	db.Blocks = make([]*block.Block, 0, 20)
+// 	accounts := books.NewBookManager()
+// 	accounts.AddValidVDFValue(block.VDF([]byte{1}))
 
-	accounts.CreateAccount([]byte("me"), 100000000)
-	accounts.CreateAccount([]byte("you"), 0)
+// 	accounts.CreateAccount([]byte("me"), 100000000)
+// 	accounts.CreateAccount([]byte("you"), 0)
 
-	blockchainAPI := New(accounts, db, nil, nil)
-	tps1 := blockchainAPI.TPS()
-	// time.Sleep(1 * time.Second)
+// 	blockchainAPI := New(accounts, db, nil, nil)
+// 	tps1 := blockchainAPI.TPS()
+// 	// time.Sleep(1 * time.Second)
 
-	for i := 0; i < 10; i++ {
-		transactions := block.CreateRealTransactionsFrom(10, []byte("me"))
-		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
-		db.Blocks = append(db.Blocks, &bl)
-		accounts.ProcessBlocks([]block.Block{bl})
-	}
-	time.Sleep(1 * time.Second)
-	tps2 := blockchainAPI.TPS()
+// 	for i := 0; i < 10; i++ {
+// 		transactions := block.CreateRealTransactionsFrom(10, []byte("me"))
+// 		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
+// 		db.Blocks = append(db.Blocks, &bl)
+// 		accounts.ProcessBlocks([]block.Block{bl})
+// 	}
+// 	time.Sleep(1 * time.Second)
+// 	tps2 := blockchainAPI.TPS()
 
-	for i := 0; i < 10; i++ {
-		transactions := block.CreateRealTransactionsFrom(100, []byte("me"))
-		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
-		db.Blocks = append(db.Blocks, &bl)
-		accounts.ProcessBlocks([]block.Block{bl})
-	}
-	time.Sleep(1 * time.Second)
-	tps3 := blockchainAPI.TPS()
+// 	for i := 0; i < 10; i++ {
+// 		transactions := block.CreateRealTransactionsFrom(100, []byte("me"))
+// 		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
+// 		db.Blocks = append(db.Blocks, &bl)
+// 		accounts.ProcessBlocks([]block.Block{bl})
+// 	}
+// 	time.Sleep(1 * time.Second)
+// 	tps3 := blockchainAPI.TPS()
 
-	if tps1 != 0 || tps2 < 60 || tps3 < 900 {
-		t.Errorf("TPS expected %v.%v.%v was %v.%v.%v!", 0, 60, 900, tps1, tps2, tps3)
-	}
-}
+// 	if tps1 != 0 || tps2 < 60 || tps3 < 900 {
+// 		t.Errorf("TPS expected %v.%v.%v was %v.%v.%v!", 0, 60, 900, tps1, tps2, tps3)
+// 	}
+// }
 
-func TestCalculateBlockTime(t *testing.T) {
-	db := new(DBMock)
-	db.Blocks = make([]*block.Block, 0, 20)
-	accounts := books.NewBookManager()
-	accounts.AddValidVDFValue(block.VDF([]byte{1}))
+// func TestCalculateBlockTime(t *testing.T) {
+// 	db := new(DBMock)
+// 	db.Blocks = make([]*block.Block, 0, 20)
+// 	accounts := books.NewBookManager()
+// 	accounts.AddValidVDFValue(block.VDF([]byte{1}))
 
-	accounts.CreateAccount([]byte("me"), 1000)
-	accounts.CreateAccount([]byte("you"), 0)
+// 	accounts.CreateAccount([]byte("me"), 1000)
+// 	accounts.CreateAccount([]byte("you"), 0)
 
-	blockchainAPI := New(accounts, db, nil, nil)
-	stop := true
-	go blockchainAPI.calculateBlockTime(&stop)
-	time.Sleep(blockTimeDelay)
-	for i := 0; i < 10; i++ {
-		transactions := block.CreateRealTransactionsFrom(10, []byte("me"))
-		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
-		bl.Number = uint64(i)
-		db.Blocks = append(db.Blocks, &bl)
-		accounts.ProcessBlocks([]block.Block{bl})
-	}
-	time.Sleep(blockTimeDelay)
-	stop = false
-	if blockchainAPI.stats.minBlockTime >= 10000 {
-		t.Errorf("calculateTPS expected %v was %v!", 10000, blockchainAPI.stats.minBlockTime)
-	}
-	fmt.Println(blockchainAPI.stats)
-}
+// 	blockchainAPI := New(accounts, db, nil, nil)
+// 	stop := true
+// 	go blockchainAPI.calculateBlockTime(&stop)
+// 	time.Sleep(blockTimeDelay)
+// 	for i := 0; i < 10; i++ {
+// 		transactions := block.CreateRealTransactionsFrom(10, []byte("me"))
+// 		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
+// 		bl.Number = uint64(i)
+// 		db.Blocks = append(db.Blocks, &bl)
+// 		accounts.ProcessBlocks([]block.Block{bl})
+// 	}
+// 	time.Sleep(blockTimeDelay)
+// 	stop = false
+// 	if blockchainAPI.stats.minBlockTime >= 10000 {
+// 		t.Errorf("calculateTPS expected %v was %v!", 10000, blockchainAPI.stats.minBlockTime)
+// 	}
+// 	fmt.Println(blockchainAPI.stats)
+// }
 
-func TestBlockTime(t *testing.T) {
-	db := new(DBMock)
-	db.Blocks = make([]*block.Block, 0, 20)
-	accounts := books.NewBookManager()
-	accounts.AddValidVDFValue(block.VDF([]byte{1}))
+// func TestBlockTime(t *testing.T) {
+// 	db := new(DBMock)
+// 	db.Blocks = make([]*block.Block, 0, 20)
+// 	accounts := books.NewBookManager()
+// 	accounts.AddValidVDFValue(block.VDF([]byte{1}))
 
-	accounts.CreateAccount([]byte("me"), 1000)
-	accounts.CreateAccount([]byte("you"), 0)
+// 	accounts.CreateAccount([]byte("me"), 1000)
+// 	accounts.CreateAccount([]byte("you"), 0)
 
-	blockchainAPI := New(accounts, db, nil, nil)
-	blTime1 := blockchainAPI.BlockTime()
-	// time.Sleep(1 * time.Second)
+// 	blockchainAPI := New(accounts, db, nil, nil)
+// 	blTime1 := blockchainAPI.BlockTime()
+// 	// time.Sleep(1 * time.Second)
 
-	for i := 0; i < 10; i++ {
-		transactions := block.CreateRealTransactionsFrom(10, []byte("me"))
-		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
-		db.Blocks = append(db.Blocks, &bl)
-		accounts.ProcessBlocks([]block.Block{bl})
-	}
-	time.Sleep(blockTimeDelay)
-	blTime2 := blockchainAPI.BlockTime()
+// 	for i := 0; i < 10; i++ {
+// 		transactions := block.CreateRealTransactionsFrom(10, []byte("me"))
+// 		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
+// 		db.Blocks = append(db.Blocks, &bl)
+// 		accounts.ProcessBlocks([]block.Block{bl})
+// 	}
+// 	time.Sleep(blockTimeDelay)
+// 	blTime2 := blockchainAPI.BlockTime()
 
-	for i := 0; i < 20; i++ {
-		transactions := block.CreateRealTransactionsFrom(100, []byte("me"))
-		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
-		db.Blocks = append(db.Blocks, &bl)
-		accounts.ProcessBlocks([]block.Block{bl})
-	}
-	time.Sleep(blockTimeDelay)
-	blTime3 := blockchainAPI.BlockTime()
+// 	for i := 0; i < 20; i++ {
+// 		transactions := block.CreateRealTransactionsFrom(100, []byte("me"))
+// 		bl := block.New(block.VDF([]byte("hello")), uint64(i), 100, &transactions)
+// 		db.Blocks = append(db.Blocks, &bl)
+// 		accounts.ProcessBlocks([]block.Block{bl})
+// 	}
+// 	time.Sleep(blockTimeDelay)
+// 	blTime3 := blockchainAPI.BlockTime()
 
-	if blTime1 != 0 || blTime2 >= 10000 || blTime3 >= 10000 {
-		t.Errorf("TPS expected %v.%v.%v was %v.%v.%v!", 0, 9, 19, blTime1, blTime2, blTime3)
-	}
-}
+// 	if blTime1 != 0 || blTime2 >= 10000 || blTime3 >= 10000 {
+// 		t.Errorf("TPS expected %v.%v.%v was %v.%v.%v!", 0, 9, 19, blTime1, blTime2, blTime3)
+// 	}
+// }
